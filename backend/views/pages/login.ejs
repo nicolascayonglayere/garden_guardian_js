@@ -1,0 +1,78 @@
+<html>
+  <head>
+    <%- include('../components/head', {title: 'Login', css_stylesheets:
+    '/stylesheets/login.css'})%>
+  </head>
+  <body>
+    <div class="col-md-12">
+      <div class="wrapper">
+        <div class="logo">
+          <img
+            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+            alt="Image de profil"
+          />
+        </div>
+        <div class="text-center mt-4 name">Authentification</div>
+        <form class="p-3 mt-3" method="post" action="/login">
+          <div
+            class="form-field d-flex align-items-center needs-validation"
+            onsubmit="return validateForm(this)"
+            novalidate
+          >
+            <span class="far fa-user"></span>
+            <input
+              type="text"
+              name="email"
+              id="email"
+              placeholder="Email"
+              required
+            />
+            <div class="invalid-feedback">Saisissez votre email</div>
+          </div>
+          <div class="form-field d-flex align-items-center">
+            <span class="fas fa-key"></span>
+            <input
+              type="password"
+              name="password"
+              id="pwd"
+              placeholder="Password"
+              required
+            />
+            <div class="invalid-feedback">Saisissez votre mot de passe</div>
+          </div>
+          <button class="btn mt-3" type="submit">Login</button>
+        </form>
+        <div class="text-center fs-6">
+          <a href="#">Forget password?</a> or <a href="#">Sign up</a>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    (function () {
+      "use strict";
+      window.addEventListener(
+        "load",
+        function () {
+          // Fetch all the forms we want to apply custom Bootstrap validation styles to
+          var forms = document.getElementsByClassName("needs-validation");
+          // Loop over them and prevent submission
+          var validation = Array.prototype.filter.call(forms, function (form) {
+            form.addEventListener(
+              "submit",
+              function (event) {
+                if (form.checkValidity() === false) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                }
+                form.classList.add("was-validated");
+              },
+              false
+            );
+          });
+        },
+        false
+      );
+    })();
+  </script>
+</html>

@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Utilisateur {
+  id                 Int                       @id @default(autoincrement())
+  nom                String
+  prenom             String?
+  mot_de_passe       String
+  email              String                    @unique
+  mot_secret         String
+  token              String                    @unique @default("")
+  token_created_date DateTime                  @default(now())
+  calendriers        UtilisateursCalendriers[]
+  calendriers_crees  Calendrier[]
+}
+
+model Calendrier {
+  id            Int                       @id @default(autoincrement())
+  utilisateurs  UtilisateursCalendriers[]
+  auteur        Utilisateur               @relation(fields: [auteur_id], references: [id])
+  auteur_id     Int
+  date_creation DateTime
+  cultures      CultureInstance[]
+}
+
+model UtilisateursCalendriers {
+  utilisateur      Utilisateur @relation(fields: [utilisateur_id], references: [id])
+  utilisateur_id   Int
+  calendrier       Calendrier  @relation(fields: [calendrier_id], references: [id])
+  calendrier_id    Int
+  date_utilisation DateTime    @default(now())
+
+  @@id([utilisateur_id, calendrier_id])
+}
+
+model CultureInstance {
+  id             Int                @id @default(autoincrement())
+  date_demarrage DateTime           @default(now())
+  calendrier     Calendrier         @relation(fields: [calendrier_id], references: [id])
+  calendrier_id  Int
+  culture        CultureRecommandee @relation(fields: [culture_id], references: [id])
+  culture_id     Int
+}
+
+model CultureRecommandee {
+  id                    Int                         @id @default(autoincrement())
+  nom                   String
+  en_construction       Boolean                     @default(true)
+  recommandation_basse  Int
+  recommandation_haute  Int
+  cultures_instances    CultureInstance[]
+  nom_latin             String?
+  duree_cycle           Int
+  produit               String?
+  variete               String?
+  operations_culturales OperationCulturaleCulture[]
+}
+
+model OperationCulturale {
+  id          Int                         @id @default(autoincrement())
+  nom         String
+  description String?
+  cultures    OperationCulturaleCulture[]
+}
+
+model OperationCulturaleCulture {
+  culture                     CultureRecommandee @relation(fields: [culture_id], references: [id])
+  culture_id                  Int
+  operation_culturale         OperationCulturale @relation(fields: [operation_id], references: [id])
+  operation_id                Int
+  origine_intervalle_possible Int
+  intervalle_possible         Int
+  statut                      String             @default("TODO")
+  date_realisation            DateTime?
+
+  @@id([culture_id, operation_id])
+}

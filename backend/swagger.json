@@ -1,0 +1,744 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "0.1.0",
+    "title": "Garden guardian API ",
+    "description": "Garden calendar generator",
+    "contact": {
+      "name": "yogj",
+      "email": "info@email.com"
+    }
+  },
+  "host": "localhost:8181",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Utilisateurs",
+      "description": "API for users in the system"
+    },
+    {
+      "name": "Calendriers",
+      "description": "API for calendars in the system"
+    },
+    {
+      "name": "CulturesRecommandees",
+      "description": "API for CulturesRecommandees in the system"
+    },
+    {
+      "name": "OperationsCulturales",
+      "description": "API for cultural operations in the system"
+    }
+  ],
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/users/{id}": {
+      "get": {
+        "tags": ["Utilisateurs"],
+        "summary": "Get user in system by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "required": true,
+            "description": "ID of user that we want to find"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Utilisateur"
+            }
+          }
+        }
+      }
+    },
+    "/users?": {
+      "get": {
+        "tags": ["Utilisateurs"],
+        "summary": "Get user in system by email",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "email of user that we want to find"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Utilisateur"
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "tags": ["Utilisateurs"],
+        "summary": "Create a user in the system",
+        "parameters": [
+          {
+            "name": "Utilisateur",
+            "in": "body",
+            "description": "User that we want to create",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nom": { "type": "string" },
+                "prenom": { "type": "string" },
+                "mot_de_passe": { "type": "string" },
+                "email": { "type": "string" },
+                "mot_secret": { "type": "string" }
+              }
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Utilisateur"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Utilisateurs"],
+        "summary": "Update an user in the system",
+        "parameters": [
+          {
+            "name": "Utilisateur",
+            "in": "body",
+            "description": "User that we want to update",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nom": { "type": "string" },
+                "prenom": { "type": "string" },
+                "mot_de_passe": { "type": "string" },
+                "email": { "type": "string" },
+                "mot_secret": { "type": "string" }
+              }
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Utilisateur"
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}/calendars_created": {
+      "get": {
+        "tags": ["Calendriers"],
+        "summary": "Get calendars created by user of ID {id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "required": true,
+            "description": "id of user that we want to find"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "item": {
+                "type": "object",
+                "$ref": "#/components/schemas/Calendrier"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}/calendars_used": {
+      "get": {
+        "tags": ["Calendriers"],
+        "summary": "Get calendars used by user of ID {id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "required": true,
+            "description": "id of user that we want to find"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "item": {
+                "type": "object",
+                "$ref": "#/components/schemas/Calendrier"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}/calendars/": {
+      "post": {
+        "tags": ["Calendriers"],
+        "summary": "Add a new calendar for the user of ID {id}",
+        "parameters": [
+          {
+            "name": "Calendrier",
+            "in": "body",
+            "description": "New calendar that we want to create and add to the user",
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Calendrier"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Utilisateur"
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}/calendars/{id}": {
+      "get": {
+        "tags": ["Calendriers"],
+        "summary": "Get calendars used by user of ID {id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "required": true,
+            "description": "id of user that we want to find"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "required": true,
+            "description": "id of calendar that we want to find"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Calendrier"
+            }
+          }
+        }
+      }
+    },
+    "/operations_culturales/{id}": {
+      "get": {
+        "tags": ["OperationsCulturales"],
+        "summary": "Get cultural operation of ID {id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "required": true,
+            "description": "id of cultural operation that we want to find"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/OperationCulturale"
+            }
+          }
+        }
+      }
+    },
+    "/operations_culturales/": {
+      "post": {
+        "tags": ["OperationsCulturales"],
+        "summary": "Add a new cultural operation",
+        "parameters": [
+          {
+            "name": "OperationCulturale",
+            "in": "body",
+            "description": "New calendar that we want to create",
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/OperationCulturale"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/OperationCulturale"
+            }
+          }
+        }
+      }
+    },
+    "cultures_recommandees/": {
+      "post": {
+        "tags": ["CulturesRecommandees"],
+        "summary": "Add a new culture",
+        "parameters": [
+          {
+            "name": "CultureRecommandee",
+            "in": "body",
+            "description": "New crop that we want to create",
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Culture"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Culture"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["CulturesRecommandees"],
+        "summary": "Update a culture",
+        "parameters": [
+          {
+            "name": "CultureRecommandee",
+            "in": "body",
+            "description": "The crop that we want to update",
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Culture"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Culture"
+            }
+          }
+        }
+      }
+    },
+    "cultures_recommandees?": {
+      "get": {
+        "tags": ["CulturesRecommandees"],
+        "summary": "Get cultures in system by name",
+        "parameters": [
+          {
+            "name": "nom",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "name of culture that we want to find"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "item": {
+                "type": "object",
+                "$ref": "#/components/schemas/Culture"
+              }
+            }
+          }
+        }
+      }
+    },
+    "cultures_recommandees/construction": {
+      "get": {
+        "tags": ["CulturesRecommandees"],
+        "summary": "Get cultures in edition in the system",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "item": {
+                "type": "object",
+                "$ref": "#/components/schemas/Culture"
+              }
+            }
+          }
+        }
+      }
+    },
+    "cultures_recommandees/{:id}": {
+      "get": {
+        "tags": ["CulturesRecommandees"],
+        "summary": "Get cultures in system by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "required": true,
+            "description": "id of culture that we want to find"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Culture"
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Utilisateur": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "uniqueItems": true,
+            "description": "auto-generated id"
+          },
+          "nom": {
+            "type": "string",
+            "description": "nom de l'utilisateur"
+          },
+          "prenom": {
+            "type": "string",
+            "description": "prenom de l'utilisateur"
+          },
+          "mot_de_passe": {
+            "type": "string",
+            "description": "mot de passe de connexion"
+          },
+          "email": {
+            "type": "string",
+            "description": "email de l'utilisateur"
+          },
+          "mot_secret": {
+            "type": "string",
+            "description": "cle de generation d'un token d'authentification"
+          },
+          "calendriers": {
+            "type": "array",
+            "description": "calendriers utilisés par l'utilisateur",
+            "items": {
+              "type": "object",
+              "$ref": "#/components/schemas/Calendrier"
+            }
+          },
+          "calendriers_crees": {
+            "type": "array",
+            "description": "calendriers crées par l'utilisateur",
+            "items": {
+              "type": "object",
+              "$ref": "#/components/schemas/Calendrier"
+            }
+          }
+        }
+      },
+      "Calendrier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "uniqueItems": true,
+            "description": "auto-generated id"
+          },
+          "date_creation": {
+            "type": "string",
+            "description": "date de creation du calendrier",
+            "format": "date"
+          },
+          "auteur": {
+            "type": "object",
+            "$ref": "#/components/schemas/Utilisateur",
+            "description": "Utilisateur qui a cree le calendrier"
+          },
+          "auteur_id": {
+            "type": "integer",
+            "description": "auto-generated id de l'auteur"
+          },
+          "utilisateurs": {
+            "type": "array",
+            "description": "Utilisateurs qui utilisent le calendrier",
+            "item": {
+              "type": "object",
+              "properties": {
+                "utilisateur": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Utilisateur"
+                },
+                "utilisateur_id": {
+                  "type": "integer",
+                  "description": "auto-generated id de l'utilisateur"
+                },
+                "calendrier": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Calendrier"
+                },
+                "calendrier_id": {
+                  "type": "integer",
+                  "description": "auto-generated id du calendrier"
+                },
+                "date_utilisation": {
+                  "type": "string",
+                  "description": "date d'utilisation' du calendrier",
+                  "format": "date"
+                }
+              }
+            }
+          },
+          "cultures": {
+            "type": "array",
+            "description": "cultures composant le calendrier",
+            "item": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "uniqueItems": true,
+                  "description": "auto-generated id"
+                },
+                "date_demarrage": {
+                  "type": "string",
+                  "description": "date de démarrage de la culture",
+                  "format": "date"
+                },
+                "calendrier": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Calendrier"
+                },
+                "calendrier_id": {
+                  "type": "integer",
+                  "description": "auto-generated id"
+                },
+                "culture": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Culture"
+                },
+                "culture_id": {
+                  "type": "integer",
+                  "description": "auto-generated id"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Culture": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "uniqueItems": true,
+            "description": "auto-generated id"
+          },
+          "nom": {
+            "type": "string",
+            "description": "nom de la plante cultivee"
+          },
+          "en_construction": {
+            "type": "boolean",
+            "description": "indique si la culture est en cours de construction et donc utilisable dans un calendrier"
+          },
+          "recommandation_basse": {
+            "type": "integer",
+            "description": "numero du jour où l'on peut commencer cette culture"
+          },
+          "recommandation_haute": {
+            "type": "integer",
+            "description": "numero du dernier jour où l'on peut commencer cette culture"
+          },
+          "cultures_instances": {
+            "type": "array",
+            "description": "instance de cette culture utilisée dans des calendriers",
+            "item": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "uniqueItems": true,
+                  "description": "auto-generated id"
+                },
+                "date_demarrage": {
+                  "type": "string",
+                  "description": "date de démarrage de la culture",
+                  "format": "date"
+                },
+                "calendrier": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Calendrier"
+                },
+                "calendrier_id": {
+                  "type": "integer",
+                  "description": "auto-generated id"
+                },
+                "culture": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Culture"
+                },
+                "culture_id": {
+                  "type": "integer",
+                  "description": "auto-generated id"
+                }
+              }
+            }
+          },
+          "nom_latin": {
+            "type": "string",
+            "description": "nom latin de la plante cultivée"
+          },
+          "duree_cycle": {
+            "type": "integer",
+            "description": "durée du cycle de la plante en jour"
+          },
+          "produit": {
+            "type": "string",
+            "description": "détermine le produit obtenu par cette culture"
+          },
+          "variete": {
+            "type": "string",
+            "description": "nom de la variété de la plante cultivée"
+          },
+          "operations_culturales": {
+            "type": "array",
+            "description": "décrit les différentes opérations culturales pour cette culture",
+            "item": {
+              "type": "object",
+              "$ref": "#/components/schemas/OperationCulturaleCulture"
+            }
+          }
+        }
+      },
+      "OperationCulturaleCulture": {
+        "type": "object",
+        "description": "Une opération culturale pour une culture",
+        "properties": {
+          "culture": {
+            "type": "object",
+            "$ref": "#/components/schemas/Culture"
+          },
+          "culture_id": {
+            "type": "integer"
+          },
+          "operation_culturale": {
+            "type": "object",
+            "$ref": "#/components/schemas/OperationCulturale"
+          },
+          "operation_id": {
+            "type": "integer"
+          },
+          "origine_intervalle_possible": {
+            "type": "integer",
+            "description": "numero du jour à partir on peut commencer l'opération culturale"
+          },
+          "intervalle_possible": {
+            "type": "integer",
+            "description": "nombre de jour possible pour lesquels on peut faire l'opération culturale"
+          },
+          "statut": {
+            "type": "string",
+            "description": "A faire ou en cours ou réalisé"
+          },
+          "date_realisation": {
+            "type": "string",
+            "description": "date à laquelle a été réalisée l'opération culturale",
+            "format": "date"
+          }
+        }
+      },
+      "OperationCulturale": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "uniqueItems": true,
+            "description": "auto-generated id"
+          },
+          "nom": {
+            "type": "string",
+            "description": "nom de l'opération culturale"
+          },
+          "description": {
+            "type": "string",
+            "description": "description de l'opération culturale"
+          },
+          "cultures": {
+            "type": "array",
+            "description": "instance de l'opération culturale pour différentes cultures",
+            "item": {
+              "type": "object",
+              "$ref": "#/components/schemas/OperationCulturaleCulture"
+            }
+          }
+        }
+      }
+    }
+  }
+}
